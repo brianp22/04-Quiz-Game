@@ -21,17 +21,19 @@ function nextQuestion () {
 
 }
 
-function showQuestion(questions) {
-    questionElement.innerHTML = questions.title;
-    for (var i = 0; i < questions.choices.length; i++) {
-        var button = document.createElement("button");
-        button.innerHTML = questions.choices[i];
-        button.classList.add("btn")
-        button.addEventListener("click", selectAnswer);
-        answerButtonsElement.appendChild(button);
-    }
-
-}
+function showQuestion(question) {
+    questionElement.innerText = question.question
+    question.answers.forEach(answer => {
+      const button = document.createElement("button")
+      button.innerText = answer.text
+      button.classList.add("btn")
+      if (answer.correct) {
+        button.dataset.correct = answer.correct
+      }
+      button.addEventListener("click", selectAnswer)
+      answerButtonsElement.appendChild(button)
+    })
+  }
 
 function selectAnswer(e) {
 
@@ -43,4 +45,41 @@ function resetPage() {
         answerButtonsElement.removeChild(answerButtonsElement.firstChild)
     }
 }
+
+var questions = [
+    {
+      question: "What is 2 + 2?",
+      answers: [
+        { text: "4", correct: true },
+        { text: "22", correct: false },
+        { text: "87", correct: false},
+        { text: "43", correct: true},
+      ]
+    },
+    {
+      question: "Who is the best YouTuber?",
+      answers: [
+        { text: "Web Dev Simplified", correct: true },
+        { text: "Traversy Media", correct: true },
+        { text: "Dev Ed", correct: true },
+        { text: "Fun Fun Function", correct: true }
+      ]
+    },
+    {
+      question: "Is web development fun?",
+      answers: [
+        { text: "Kinda", correct: false },
+        { text: "YES!!!", correct: true },
+        { text: "Um no", correct: false },
+        { text: "IDK", correct: false }
+      ]
+    },
+    {
+      question: "What is 4 * 2?",
+      answers: [
+        { text: "6", correct: false },
+        { text: "8", correct: true }
+      ]
+    }
+  ]
 
