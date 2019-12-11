@@ -1,78 +1,79 @@
-var startButton = document.getElementById("start-btn")
-var nextButton = document.getElementById("next-btn")
-var questionContainerElement = document.getElementById("question-container")
-var questionElement = document.getElementById("question")
-var answerButtonsElement = document.getElementById("answer-buttons")
+var startButton = document.getElementById("start-btn");
+var nextButton = document.getElementById("next-btn");
+var questionContainerElement = document.getElementById("question-container");
+var questionElement = document.getElementById("question");
+var answerButtonsElement = document.getElementById("answer-buttons");
 
 
 
-startButton.addEventListener("click", startGame)
+startButton.addEventListener("click", start);
+
 nextButton.addEventListener("click", () => {
-    currentQuestionIndex++
-    setNextQuestion()
+    currentQuestionIndex++;
+    nextQuestion();
 })
 
-function startGame() {
-    startButton.classList.add("hide")
-    currentQuestionIndex = 0
-    questionContainerElement.classList.remove("hide")
-    setNextQuestion()
+function start() {
+    startButton.classList.add("hide");
+    currentQuestionIndex = 0;
+    questionContainerElement.classList.remove("hide");
+    nextQuestion();
 }
 
-function setNextQuestion() {
-    resetState()
-    showQuestion(questions[currentQuestionIndex])
+function nextQuestion() {
+    reset();
+    showQuestion(questions[currentQuestionIndex]);
 }
 
 function showQuestion(question) {
-    questionElement.innerText = question.question
+    questionElement.innerText = question.question;
     question.answers.forEach(answer => {
-        var button = document.createElement("button")
-        button.innerText = answer.text
-        button.classList.add("btn")
+        var button = document.createElement("button");
+        button.innerText = answer.text;
+        button.classList.add("btn");
         if (answer.correct) {
-            button.dataset.correct = answer.correct
+            button.dataset.correct = answer.correct;
         }
-        button.addEventListener("click", selectAnswer)
-        answerButtonsElement.appendChild(button)
+        button.addEventListener("click", pickAnswer);
+        answerButtonsElement.appendChild(button);
     })
 }
 
-function resetState() {
-    clearStatusClass(document.body)
-    nextButton.classList.add("hide")
+function reset() {
+    removeAnswerStatus(document.body);
+    nextButton.classList.add("hide");
     while (answerButtonsElement.firstChild) {
-        answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild);
     }
 }
 
-function selectAnswer(e) {
-    var selectedButton = e.target
-    var correct = selectedButton.dataset.correct
-    setStatusClass(document.body, correct)
+function pickAnswer(e) {
+    var selectedButton = e.target;
+    var correct = selectedButton.dataset.correct;
+    answerStatus(document.body, correct);
     Array.from(answerButtonsElement.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct)
+        answerStatus(button, button.dataset.correct);
     })
     if (questions.length > currentQuestionIndex + 1) {
-        nextButton.classList.remove("hide")
+        nextButton.classList.remove("hide");
     } else {
-        startButton.innerText = "Restart"
-        startButton.classList.remove("hide")
+        startButton.innerText = "Restart";
+        startButton.classList.remove("hide");
     }
 }
 
-function setStatusClass(element, correct) {
-    clearStatusClass(element)
+function answerStatus(element, correct) {
+    removeAnswerStatus(element);
     if (correct) {
-        element.classList.add("correct")
+        element.classList.add("correct");
     } else {
-        element.classList.add("wrong")
+        element.classList.add("wrong");
     }
 }
 
-function clearStatusClass(element) {
-    element.classList.remove("correct")
-    element.classList.remove("wrong")
+function removeAnswerStatus(element) {
+    element.classList.remove("correct");
+    element.classList.remove("wrong");
 }
 
 var questions = [
