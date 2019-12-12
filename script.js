@@ -3,6 +3,9 @@ var nextButton = document.getElementById("next-btn");
 var questionContainerElement = document.getElementById("question-container");
 var questionElement = document.getElementById("question");
 var answerButtonsElement = document.getElementById("answer-buttons");
+var highscoreContainer = document.getElementById("highscore-container");
+
+var score = 0;
 
 
 
@@ -12,6 +15,22 @@ nextButton.addEventListener("click", () => {
     currentQuestionIndex++;
     nextQuestion();
 })
+
+function answerStatus(element, correct) {
+    removeAnswerStatus(element);
+    if (correct) {
+        element.classList.add("correct");
+        score++;
+    } else {
+        element.classList.add("wrong");
+        nextQuestion();
+    }
+}
+
+function removeAnswerStatus(element) {
+    element.classList.remove("correct");
+    element.classList.remove("wrong");
+}
 
 function start() {
     startButton.classList.add("hide");
@@ -57,25 +76,10 @@ function pickAnswer(e) {
     if (questions.length > currentQuestionIndex + 1) {
         nextButton.classList.remove("hide");
     } else {
-        startButton.innerText = "Restart";
-        startButton.classList.remove("hide");
+        highscoreContainer.classList.remove("hide");
+        
     }
 }
-
-function answerStatus(element, correct) {
-    removeAnswerStatus(element);
-    if (correct) {
-        element.classList.add("correct");
-    } else {
-        element.classList.add("wrong");
-    }
-}
-
-function removeAnswerStatus(element) {
-    element.classList.remove("correct");
-    element.classList.remove("wrong");
-}
-
 var questions = [
     {
         question: "How many infinity stones are there?",
